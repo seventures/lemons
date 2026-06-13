@@ -22,10 +22,13 @@ const CONFIG = {
   // ── Social links ─────────────────────────────────────────────────────────
   // icon: any Font Awesome 6 class, e.g. "fab fa-youtube", "fas fa-link"
   socials: [
-    { icon: "fab fa-youtube",  label: "YouTube",          url: "https://youtube.com/@sseventure" },
-    { icon: "fab fa-discord",  label: "lemonshop",  url: "https://discord.com/invite/KTDGPWFbPe" },
-    { icon: "fab fa-discord",  label: "Weaponfall",   url: "https://discord.com/invite/G78n8EH65r" },
-    { icon: "fas fa-cube",     label: "NameMC",           url: "https://namemc.com/seventure" },
+    { icon: "fab fa-youtube",     label: "YouTube",      url: "https://youtube.com/@sseventure" },
+    { icon: "fab fa-discord",     label: "lemonshop",    url: "https://discord.com/invite/KTDGPWFbPe" },
+    { icon: "fab fa-discord",     label: "Weaponfall",   url: "https://discord.com/invite/G78n8EH65r" },
+    { icon: "fas fa-cube",        label: "NameMC",       url: "https://namemc.com/seventure" },
+    { icon: "fab fa-youtube",     label: "ユーチューブ", url: "https://youtube.com/@セベンチャー" },
+    { icon: "fab fa-youtube",     label: "유춥",         url: "https://youtube.com/@세벤처" },
+    { icon: "fas fa-note-sticky", label: "小红书",       url: "https://www.rednote.com/user/profile/6a1247a3000000000d034c02" },
   ],
 
   // ── Profile view base count ───────────────────────────────────────────────
