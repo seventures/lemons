@@ -88,9 +88,6 @@ let audio = null;
 let seeking = false;
 
 function initMusic() {
-  audio = new Audio('assets/music.mp3');
-  audio.volume = parseFloat(document.getElementById('volume-slider').value);
-
   const musicEl   = document.getElementById('music');
   const playBtn   = document.getElementById('music-play');
   const prevBtn   = document.getElementById('music-prev');
@@ -100,6 +97,11 @@ function initMusic() {
   const durEl     = document.getElementById('music-duration');
   const volSlider = document.getElementById('volume-slider');
   const volIcon   = document.getElementById('volume-icon');
+
+  musicEl.style.display = 'flex';
+
+  audio = new Audio('assets/music.mp3');
+  audio.volume = parseFloat(volSlider.value);
 
   jsmediatags.read('assets/music.mp3', {
     onSuccess: (tag) => {
@@ -111,16 +113,19 @@ function initMusic() {
       }
       document.getElementById('music-title').textContent = t.title || 'My Ordinary Life';
       document.getElementById('music-artist').textContent = t.artist || 'The Living Tombstone';
-      musicEl.style.display = 'flex';
     },
-    onError: () => {
-      musicEl.style.display = 'flex';
-    }
+    onError: () => {}
   });
 
   audio.addEventListener('loadedmetadata', () => {
     durEl.textContent = formatTime(audio.duration);
   });
+
+  audio.addEventListener('canplay', () => {
+    audio.play().then(() => {
+      playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    }).catch(() => {});
+  }, { once: true });
 
   audio.addEventListener('timeupdate', () => {
     if (!seeking && audio.duration) {
@@ -145,8 +150,9 @@ function initMusic() {
 
   const togglePlay = () => {
     if (audio.paused) {
-      audio.play();
-      playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      audio.play().then(() => {
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      }).catch(() => {});
     } else {
       audio.pause();
       playBtn.innerHTML = '<i class="fas fa-play"></i>';
@@ -159,18 +165,12 @@ function initMusic() {
     audio.currentTime = 0;
     progress.value = 0;
     curEl.textContent = '0:00';
-    if (!audio.paused) {
-      audio.play();
-    }
   });
 
   nextBtn.addEventListener('click', () => {
     audio.currentTime = 0;
     progress.value = 0;
     curEl.textContent = '0:00';
-    if (!audio.paused) {
-      audio.play();
-    }
   });
 
   audio.addEventListener('ended', () => {
@@ -187,13 +187,10 @@ function initMusic() {
         ? 'fas fa-volume-low'
         : 'fas fa-volume-high';
   });
-
-  audio.play().then(() => {
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-  }).catch(() => {});
 }
 
 function formatTime(sec) {
+  if (!sec || !isFinite(sec)) return '0:00';
   const m = Math.floor(sec / 60);
   const s = Math.floor(sec % 60);
   return `${m}:${s.toString().padStart(2, '0')}`;
