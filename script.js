@@ -18,10 +18,12 @@
   const avatarEl = document.getElementById('avatar');
   avatarEl.src = c.avatar;
 
+  const abs = (src) => new URL(src, window.location.href).href;
   const setImage = (src) => {
-    document.getElementById('og-image').content = src;
-    document.getElementById('tw-image').content = src;
-    document.getElementById('favicon').href     = src;
+    const url = abs(src);
+    document.getElementById('og-image').content = url;
+    document.getElementById('tw-image').content = url;
+    document.getElementById('favicon').href     = url;
   };
 
   avatarEl.onerror = () => {
