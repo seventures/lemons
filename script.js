@@ -53,11 +53,14 @@ document.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === '
 function enter() {
   splash.classList.add('fade-out');
   main.classList.remove('hidden');
+  initMusic();
+  audio.play().then(() => {
+    document.getElementById('music-play').innerHTML = '<i class="fas fa-pause"></i>';
+  }).catch(() => {});
   setTimeout(() => {
     main.classList.add('visible');
     splash.style.display = 'none';
     spawnParticles();
-    initMusic();
   }, 280);
 }
 
@@ -84,7 +87,9 @@ function spawnParticles() {
 }
 
 // ─── Music player ─────────────────────────────────────────────────────────────
-let audio = null;
+let audio = new Audio('assets/music.mp3');
+audio.preload = 'auto';
+audio.load();
 let seeking = false;
 
 function initMusic() {
@@ -101,12 +106,7 @@ function initMusic() {
 
   musicEl.style.display = 'flex';
 
-  if (!audio) {
-    audio = new Audio('assets/music.mp3');
-    audio.preload = 'auto';
-    audio.volume = parseFloat(volSlider.value);
-    audio.load();
-  }
+  if (!audio.volume && audio.volume !== 0) audio.volume = parseFloat(volSlider.value);
 
   cover.style.display = 'none';
   const fallbackIcon = document.createElement('i');
