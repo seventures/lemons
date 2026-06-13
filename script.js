@@ -2,16 +2,35 @@
 (function applyConfig() {
   const c = CONFIG;
 
-  document.getElementById('page-title').textContent = c.pageTitle || `@${c.username}`;
-  document.getElementById('username').textContent    = c.username;
-  document.getElementById('uid').textContent         = `UID ${c.uid}`;
-  document.getElementById('bio').textContent         = c.bio;
+  const title = c.pageTitle || `@${c.username}`;
+  const desc  = c.bio;
+
+  document.getElementById('page-title').textContent = title;
+  document.getElementById('meta-desc').content      = desc;
+  document.getElementById('og-title').content       = title;
+  document.getElementById('og-desc').content        = desc;
+  document.getElementById('tw-title').content       = title;
+  document.getElementById('tw-desc').content        = desc;
+  document.getElementById('username').textContent   = c.username;
+  document.getElementById('uid').textContent        = `UID ${c.uid}`;
+  document.getElementById('bio').textContent        = desc;
 
   const avatarEl = document.getElementById('avatar');
   avatarEl.src = c.avatar;
-  avatarEl.onerror = () => {
-    avatarEl.src = `https://api.dicebear.com/7.x/thumbs/svg?seed=${c.username}`;
+
+  const setImage = (src) => {
+    document.getElementById('og-image').content = src;
+    document.getElementById('tw-image').content = src;
+    document.getElementById('favicon').href     = src;
   };
+
+  avatarEl.onerror = () => {
+    const fallback = `https://api.dicebear.com/7.x/thumbs/svg?seed=${c.username}`;
+    avatarEl.src = fallback;
+    setImage(fallback);
+  };
+
+  setImage(c.avatar);
 
   // Badges
   const badgesEl = document.getElementById('badges');
