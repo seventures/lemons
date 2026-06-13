@@ -20,10 +20,9 @@
 
   const abs = (src) => new URL(src, window.location.href).href;
   const setImage = (src) => {
-    const url = abs(src);
-    document.getElementById('og-image').content = url;
-    document.getElementById('tw-image').content = url;
-    document.getElementById('favicon').href     = url;
+    document.getElementById('og-image').content = abs(src);
+    document.getElementById('tw-image').content = abs(src);
+    document.getElementById('favicon').href     = `https://api.dicebear.com/7.x/thumbs/svg?seed=${c.username}`;
   };
 
   avatarEl.onerror = () => {
