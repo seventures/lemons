@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="page-title">@seventure</title>
+  <meta name="description" content=":)" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- Splash -->
+  <div id="splash" class="splash">
+    <div class="splash-inner">
+      <p class="splash-text">Welcome!<br>ようこそ！<br>환영!<br>欢迎！</p>
+    </div>
+  </div>
+
+  <!-- Main profile -->
+  <div id="main" class="main hidden">
+    <div class="bg-blur" id="bg-blur"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="card">
+      <div class="avatar-wrap">
+        <img class="avatar" id="avatar" src="assets/avatar.png" alt="avatar"
+             onerror="this.src='https://api.dicebear.com/7.x/thumbs/svg?seed=seventure'" />
+        <div class="avatar-ring"></div>
+      </div>
+
+      <h1 class="username" id="username">seventure</h1>
+      <p class="uid" id="uid">UID 001</p>
+      <p class="bio" id="bio">Hello! | こんにちは！ | 안녕하세요! | 你好！</p>
+
+      <div class="badges" id="badges"></div>
+      <div class="socials" id="socials"></div>
+
+      <!-- Profile views - off by default -->
+      <!-- <div class="views"> -->
+      <!--  <i class="fas fa-eye"></i> -->
+      <!--  <span id="view-count">0</span>&nbsp;Profile Views -->
+      <!--</div> -->
+    </div>
+
+    <p class="footer">Make your own &mdash; <a href="https://github.com/seventures/lemons">GitHub</a></p>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
