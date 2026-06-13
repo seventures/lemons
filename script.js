@@ -43,8 +43,6 @@
 // ─── Playlist ─────────────────────────────────────────────────────────────────
 const playlist = [
   { src: 'assets/music1.mp3', title: 'My Ordinary Life', artist: 'The Living Tombstone' },
-  { src: 'assets/music2.mp3', title: 'Dream Running',   artist: '—' },
-  { src: 'assets/music3.mp3', title: 'Moan',            artist: '—' },
 ];
 let currentTrack = 0;
 
