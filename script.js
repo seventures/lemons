@@ -2,7 +2,7 @@
 (function applyConfig() {
   const c = CONFIG;
 
-  const title = c.pageTitle || `@${c.username}`;
+  const title = c.pageTitle || c.username;
   const desc  = c.bio;
 
   document.getElementById('page-title').textContent = title;

@@ -11,7 +11,7 @@ const CONFIG = {
   uid:         "001", // Use any number - ideally, if you were the second person, use 002
   bio:         "Hello! | こんにちは！ | 안녕하세요! | 你好！",
   avatar:      "assets/avatar.png",   // put your image in assets/ or use a URL
-  pageTitle:   "@seventure",
+  pageTitle:   "seventure",
 
   // ── Badges (emoji + label pairs, shown under bio) ─────────────────────────
   //  badges: [
