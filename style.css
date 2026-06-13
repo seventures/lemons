@@ -334,11 +334,6 @@ html, body {
   display: block;
 }
 
-.music-art .fallback {
-  font-size: 1.4rem;
-  color: var(--muted);
-}
-
 .music-body {
   flex: 1;
   min-width: 0;
