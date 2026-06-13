@@ -71,7 +71,7 @@ html, body {
 .bg-blur::before {
   content: '';
   position: absolute; inset: -60px;
-  background: url('../../Pictures/Wallpapers/Nord/pixelcity.png') center/cover no-repeat;
+  background: url('assets/background.png') center/cover no-repeat;
   filter: blur(15px) brightness(0.3) saturate(0.8);
 }
 
