@@ -14,8 +14,6 @@
   const avatarEl = document.getElementById('avatar');
   avatarEl.src = c.avatar;
 
-  const abs = (src) => new URL(src, window.location.href).href;
-
   avatarEl.onerror = () => {
     avatarEl.src = `https://api.dicebear.com/7.x/thumbs/svg?seed=${c.username}`;
   };
@@ -60,7 +58,6 @@ function enter() {
     main.classList.add('visible');
     splash.style.display = 'none';
     spawnParticles();
-    incrementViews();
   }, 280);
 }
 
@@ -84,22 +81,4 @@ function spawnParticles() {
     `;
     container.appendChild(p);
   }
-}
-
-// ─── View counter ─────────────────────────────────────────────────────────────
-function incrementViews() {
-  const el    = document.getElementById('view-count');
-  const key   = `profile_views_${CONFIG.username}`;
-  const base  = CONFIG.viewBase || 0;
-  const stored = parseInt(localStorage.getItem(key) || '0', 10);
-  const total  = base + stored + 1;
-  localStorage.setItem(key, stored + 1);
-
-  let current = base + stored;
-  const step = () => {
-    current++;
-    el.textContent = current;
-    if (current < total) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
 }
