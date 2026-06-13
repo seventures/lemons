@@ -87,9 +87,7 @@ function spawnParticles() {
 }
 
 // ─── Music player ─────────────────────────────────────────────────────────────
-let audio = new Audio('assets/music.mp3');
-audio.preload = 'auto';
-audio.load();
+let audio = document.getElementById('audio-player');
 let seeking = false;
 
 function initMusic() {
@@ -106,21 +104,14 @@ function initMusic() {
 
   musicEl.style.display = 'flex';
 
-  if (!audio.volume && audio.volume !== 0) audio.volume = parseFloat(volSlider.value);
-
   cover.style.display = 'none';
   const fallbackIcon = document.createElement('i');
   fallbackIcon.className = 'fas fa-music fallback';
   fallbackIcon.style.cssText = 'font-size:1.4rem;color:var(--muted)';
   cover.parentElement.appendChild(fallbackIcon);
 
-  const setCover = (src) => {
-    if (src) {
-      cover.src = src;
-      cover.style.display = 'block';
-      cover.onerror = () => { cover.style.display = 'none'; };
-    }
-  };
+  document.getElementById('music-title').textContent = 'Could not load';
+  document.getElementById('music-artist').textContent = 'Could not load';
 
   jsmediatags.read('assets/music.mp3', {
     onSuccess: (tag) => {
@@ -132,17 +123,18 @@ function initMusic() {
         for (let i = 0; i < bytes.length; i++) {
           binary += String.fromCharCode(bytes[i]);
         }
-        setCover(`data:${format};base64,${btoa(binary)}`);
+        cover.src = `data:${format};base64,${btoa(binary)}`;
+        cover.style.display = 'block';
+        cover.onerror = () => { cover.style.display = 'none'; };
       }
-      document.getElementById('music-title').textContent = t.title || 'My Ordinary Life';
-      document.getElementById('music-artist').textContent = t.artist || 'The Living Tombstone';
+      document.getElementById('music-title').textContent = t.title || 'Could not load';
+      document.getElementById('music-artist').textContent = t.artist || 'Could not load';
     },
     onError: () => {}
   });
 
-  audio.addEventListener('error', (e) => {
+  audio.addEventListener('error', () => {
     durEl.textContent = 'ERR';
-    playBtn.disabled = true;
   });
 
   audio.addEventListener('loadedmetadata', () => {
@@ -212,15 +204,15 @@ function initMusic() {
   });
 
   volSlider.addEventListener('input', () => {
-    if (audio) {
-      audio.volume = parseFloat(volSlider.value);
-    }
+    audio.volume = parseFloat(volSlider.value);
     volIcon.className = audio.volume === 0
       ? 'fas fa-volume-xmark'
       : audio.volume < 0.5
         ? 'fas fa-volume-low'
         : 'fas fa-volume-high';
   });
+
+  audio.volume = parseFloat(volSlider.value);
 }
 
 function formatTime(sec) {
