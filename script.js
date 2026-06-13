@@ -97,19 +97,41 @@ function initMusic() {
   const durEl     = document.getElementById('music-duration');
   const volSlider = document.getElementById('volume-slider');
   const volIcon   = document.getElementById('volume-icon');
+  const cover     = document.getElementById('music-cover');
 
   musicEl.style.display = 'flex';
 
   audio = new Audio('assets/music.mp3');
   audio.volume = parseFloat(volSlider.value);
 
+  const fallbackIcon = document.createElement('i');
+  fallbackIcon.className = 'fas fa-music fallback';
+  cover.parentElement.appendChild(fallbackIcon);
+
+  const setCover = (src) => {
+    if (src) {
+      cover.src = src;
+      cover.style.display = 'block';
+      fallbackIcon.style.display = 'none';
+    }
+  };
+
+  cover.onerror = () => {
+    cover.style.display = 'none';
+    fallbackIcon.style.display = '';
+  };
+
   jsmediatags.read('assets/music.mp3', {
     onSuccess: (tag) => {
       const t = tag.tags;
       if (t.picture) {
         const { data, format } = t.picture;
-        const base64 = data.reduce((acc, byte) => acc + String.fromCharCode(byte), '');
-        document.getElementById('music-cover').src = `data:${format};base64,${btoa(base64)}`;
+        const bytes = new Uint8Array(data);
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        setCover(`data:${format};base64,${btoa(binary)}`);
       }
       document.getElementById('music-title').textContent = t.title || 'My Ordinary Life';
       document.getElementById('music-artist').textContent = t.artist || 'The Living Tombstone';
@@ -117,15 +139,26 @@ function initMusic() {
     onError: () => {}
   });
 
+  audio.addEventListener('error', () => {
+    durEl.textContent = 'ERR';
+    playBtn.disabled = true;
+  });
+
   audio.addEventListener('loadedmetadata', () => {
     durEl.textContent = formatTime(audio.duration);
   });
 
-  audio.addEventListener('canplay', () => {
+  const tryPlay = () => {
     audio.play().then(() => {
       playBtn.innerHTML = '<i class="fas fa-pause"></i>';
     }).catch(() => {});
-  }, { once: true });
+  };
+
+  if (audio.readyState >= 2) {
+    tryPlay();
+  } else {
+    audio.addEventListener('canplay', tryPlay, { once: true });
+  }
 
   audio.addEventListener('timeupdate', () => {
     if (!seeking && audio.duration) {

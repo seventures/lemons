@@ -324,13 +324,19 @@ html, body {
   width: 56px; height: 56px;
   border-radius: 8px;
   overflow: hidden;
-  background: var(--border);
+  background: linear-gradient(135deg, rgba(136,192,208,0.3), rgba(129,161,193,0.3));
+  display: flex; align-items: center; justify-content: center;
 }
 
 .music-art img {
   width: 100%; height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.music-art .fallback {
+  font-size: 1.4rem;
+  color: var(--muted);
 }
 
 .music-body {
