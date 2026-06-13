@@ -17,7 +17,6 @@
     avatarEl.src = `https://api.dicebear.com/7.x/thumbs/svg?seed=${c.username}`;
   };
 
-  // Badges
   const badgesEl = document.getElementById('badges');
   (c.badges || []).forEach(b => {
     const span = document.createElement('span');
@@ -26,7 +25,6 @@
     badgesEl.appendChild(span);
   });
 
-  // Socials
   const socialsEl = document.getElementById('socials');
   (c.socials || []).forEach(s => {
     const a = document.createElement('a');
@@ -38,22 +36,38 @@
     socialsEl.appendChild(a);
   });
 
-  // Accent colours
   if (c.accentPrimary)   document.documentElement.style.setProperty('--accent',  c.accentPrimary);
   if (c.accentSecondary) document.documentElement.style.setProperty('--accent2', c.accentSecondary);
 })();
 
+// ─── Playlist ─────────────────────────────────────────────────────────────────
+const playlist = [
+  { src: 'assets/music1.mp3', title: 'My Ordinary Life', artist: 'The Living Tombstone' },
+  { src: 'assets/music2.mp3', title: 'Dream Running',   artist: '—' },
+  { src: 'assets/music3.mp3', title: 'Moan',            artist: '—' },
+];
+let currentTrack = 0;
+
 // ─── Splash ───────────────────────────────────────────────────────────────────
+let entered = false;
 const splash = document.getElementById('splash');
 const main   = document.getElementById('main');
 
 splash.addEventListener('click', enter);
-document.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') enter(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    enter();
+  }
+});
 
 function enter() {
+  if (entered) return;
+  entered = true;
   splash.classList.add('fade-out');
   main.classList.remove('hidden');
-  initMusic();
+  setupMusic();
+  loadTrack(0);
   audio.play().then(() => {
     document.getElementById('music-play').innerHTML = '<i class="fas fa-pause"></i>';
   }).catch(() => {});
@@ -87,10 +101,10 @@ function spawnParticles() {
 }
 
 // ─── Music player ─────────────────────────────────────────────────────────────
-let audio = document.getElementById('audio-player');
+const audio = document.getElementById('audio-player');
 let seeking = false;
 
-function initMusic() {
+function setupMusic() {
   const musicEl   = document.getElementById('music');
   const playBtn   = document.getElementById('music-play');
   const prevBtn   = document.getElementById('music-prev');
@@ -112,16 +126,34 @@ function initMusic() {
 
   audio.volume = parseFloat(volSlider.value);
 
-  audio.addEventListener('loadedmetadata', () => {
-    durEl.textContent = formatTime(audio.duration);
+  function updateDur() {
+    if (audio.duration && isFinite(audio.duration)) {
+      durEl.textContent = formatTime(audio.duration);
+    }
+  }
+
+  audio.addEventListener('loadedmetadata', updateDur);
+  audio.addEventListener('durationchange', updateDur);
+  audio.addEventListener('canplay', updateDur);
+
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration && isFinite(audio.duration)) {
+      if (!seeking) {
+        progress.value = (audio.currentTime / audio.duration) * 100;
+        curEl.textContent = formatTime(audio.currentTime);
+        if (durEl.textContent === '0:00' || durEl.textContent === '—') {
+          durEl.textContent = formatTime(audio.duration);
+        }
+      }
+    }
   });
 
   const togglePlay = () => {
     if (audio.paused) {
       audio.play().then(() => {
         playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      }).catch((e) => {
-        durEl.textContent = 'ERR:' + e.message;
+      }).catch(() => {
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
       });
     } else {
       audio.pause();
@@ -132,44 +164,39 @@ function initMusic() {
   playBtn.addEventListener('click', togglePlay);
 
   prevBtn.addEventListener('click', () => {
-    audio.currentTime = 0;
-    progress.value = 0;
-    curEl.textContent = '0:00';
+    currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
+    loadTrack(currentTrack);
     if (audio.paused) togglePlay();
   });
 
   nextBtn.addEventListener('click', () => {
-    audio.currentTime = 0;
-    progress.value = 0;
-    curEl.textContent = '0:00';
+    currentTrack = (currentTrack + 1) % playlist.length;
+    loadTrack(currentTrack);
     if (audio.paused) togglePlay();
-  });
-
-  audio.addEventListener('timeupdate', () => {
-    if (!seeking && audio.duration) {
-      progress.value = (audio.currentTime / audio.duration) * 100;
-      curEl.textContent = formatTime(audio.currentTime);
-    }
   });
 
   progress.addEventListener('input', () => {
     seeking = true;
-    if (audio.duration) {
+    if (audio.duration && isFinite(audio.duration)) {
       curEl.textContent = formatTime((progress.value / 100) * audio.duration);
     }
   });
 
   progress.addEventListener('change', () => {
-    if (audio.duration) {
+    if (audio.duration && isFinite(audio.duration)) {
       audio.currentTime = (progress.value / 100) * audio.duration;
     }
     seeking = false;
   });
 
   audio.addEventListener('ended', () => {
-    playBtn.innerHTML = '<i class="fas fa-play"></i>';
-    progress.value = 0;
-    curEl.textContent = '0:00';
+    currentTrack = (currentTrack + 1) % playlist.length;
+    loadTrack(currentTrack);
+    audio.play().then(() => {
+      playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    }).catch(() => {
+      playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    });
   });
 
   volSlider.addEventListener('input', () => {
@@ -180,6 +207,17 @@ function initMusic() {
         ? 'fas fa-volume-low'
         : 'fas fa-volume-high';
   });
+}
+
+function loadTrack(index) {
+  const track = playlist[index];
+  audio.src = track.src;
+  audio.load();
+  document.getElementById('music-title').textContent = track.title;
+  document.getElementById('music-artist').textContent = track.artist;
+  document.getElementById('music-progress').value = 0;
+  document.getElementById('music-current').textContent = '0:00';
+  document.getElementById('music-duration').textContent = '—';
 }
 
 function formatTime(sec) {
