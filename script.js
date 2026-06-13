@@ -110,32 +110,7 @@ function initMusic() {
   fallbackIcon.style.cssText = 'font-size:1.4rem;color:var(--muted)';
   cover.parentElement.appendChild(fallbackIcon);
 
-  document.getElementById('music-title').textContent = 'Could not load';
-  document.getElementById('music-artist').textContent = 'Could not load';
-
-  jsmediatags.read('assets/music.mp3', {
-    onSuccess: (tag) => {
-      const t = tag.tags;
-      if (t.picture) {
-        const { data, format } = t.picture;
-        const bytes = new Uint8Array(data);
-        let binary = '';
-        for (let i = 0; i < bytes.length; i++) {
-          binary += String.fromCharCode(bytes[i]);
-        }
-        cover.src = `data:${format};base64,${btoa(binary)}`;
-        cover.style.display = 'block';
-        cover.onerror = () => { cover.style.display = 'none'; };
-      }
-      document.getElementById('music-title').textContent = t.title || 'Could not load';
-      document.getElementById('music-artist').textContent = t.artist || 'Could not load';
-    },
-    onError: () => {}
-  });
-
-  audio.addEventListener('error', () => {
-    durEl.textContent = 'ERR';
-  });
+  audio.volume = parseFloat(volSlider.value);
 
   audio.addEventListener('loadedmetadata', () => {
     durEl.textContent = formatTime(audio.duration);
@@ -145,7 +120,9 @@ function initMusic() {
     if (audio.paused) {
       audio.play().then(() => {
         playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      }).catch(() => {});
+      }).catch((e) => {
+        durEl.textContent = 'ERR:' + e.message;
+      });
     } else {
       audio.pause();
       playBtn.innerHTML = '<i class="fas fa-play"></i>';
@@ -158,22 +135,14 @@ function initMusic() {
     audio.currentTime = 0;
     progress.value = 0;
     curEl.textContent = '0:00';
-    if (audio.paused) {
-      audio.play().then(() => {
-        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      }).catch(() => {});
-    }
+    if (audio.paused) togglePlay();
   });
 
   nextBtn.addEventListener('click', () => {
     audio.currentTime = 0;
     progress.value = 0;
     curEl.textContent = '0:00';
-    if (audio.paused) {
-      audio.play().then(() => {
-        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      }).catch(() => {});
-    }
+    if (audio.paused) togglePlay();
   });
 
   audio.addEventListener('timeupdate', () => {
@@ -211,8 +180,6 @@ function initMusic() {
         ? 'fas fa-volume-low'
         : 'fas fa-volume-high';
   });
-
-  audio.volume = parseFloat(volSlider.value);
 }
 
 function formatTime(sec) {

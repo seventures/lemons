@@ -70,7 +70,9 @@
     </div>
   </div>
 
-  <audio id="audio-player" preload="auto" src="assets/music.mp3"></audio>
+  <audio id="audio-player" preload="auto">
+    <source src="assets/music.mp3" type="audio/mpeg" />
+  </audio>
 
   <div class="volume-wrap" id="volume-wrap">
     <i class="fas fa-volume-high" id="volume-icon"></i>
@@ -78,7 +80,6 @@
   </div>
 
   <script src="config.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
