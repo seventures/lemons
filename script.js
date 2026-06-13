@@ -7,10 +7,6 @@
 
   document.getElementById('page-title').textContent = title;
   document.getElementById('meta-desc').content      = desc;
-  document.getElementById('og-title').content       = title;
-  document.getElementById('og-desc').content        = desc;
-  document.getElementById('tw-title').content       = title;
-  document.getElementById('tw-desc').content        = desc;
   document.getElementById('username').textContent   = c.username;
   document.getElementById('uid').textContent        = `UID ${c.uid}`;
   document.getElementById('bio').textContent        = desc;
@@ -19,19 +15,12 @@
   avatarEl.src = c.avatar;
 
   const abs = (src) => new URL(src, window.location.href).href;
-  const setImage = (src) => {
-    document.getElementById('og-image').content = abs(src);
-    document.getElementById('tw-image').content = abs(src);
-    document.getElementById('favicon').href     = abs(src);
-  };
 
   avatarEl.onerror = () => {
-    const fallback = `https://api.dicebear.com/7.x/thumbs/svg?seed=${c.username}`;
-    avatarEl.src = fallback;
-    setImage(fallback);
+    avatarEl.src = `https://api.dicebear.com/7.x/thumbs/svg?seed=${c.username}`;
   };
 
-  setImage(c.avatar);
+  document.getElementById('favicon').href = abs(c.avatar);
 
   // Badges
   const badgesEl = document.getElementById('badges');
