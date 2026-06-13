@@ -24,7 +24,7 @@ const CONFIG = {
   socials: [
     { icon: "fab fa-youtube",     label: "YouTube",      url: "https://youtube.com/@sseventure" },
     { icon: "fab fa-discord",     label: "lemonshop",    url: "https://discord.com/invite/KTDGPWFbPe" },
-    { icon: "fab fa-discord",     label: "Weaponfall",   url: "https://discord.com/invite/G78n8EH65r" },
+    { icon: "fab fa-discord",     label: "Weaponfall",   url: "https://discord.gg/T56Rexb9w9" },
     { icon: "fas fa-cube",        label: "NameMC",       url: "https://namemc.com/seventure" },
     { icon: "fab fa-youtube",     label: "ユーチューブ", url: "https://youtube.com/@セベンチャー" },
     { icon: "fab fa-youtube",     label: "유춥",         url: "https://youtube.com/@세벤처" },
