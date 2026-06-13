@@ -57,6 +57,7 @@ function enter() {
     main.classList.add('visible');
     splash.style.display = 'none';
     spawnParticles();
+    initMusic();
   }, 280);
 }
 
@@ -80,4 +81,120 @@ function spawnParticles() {
     `;
     container.appendChild(p);
   }
+}
+
+// ─── Music player ─────────────────────────────────────────────────────────────
+let audio = null;
+let seeking = false;
+
+function initMusic() {
+  audio = new Audio('assets/music.mp3');
+  audio.volume = parseFloat(document.getElementById('volume-slider').value);
+
+  const musicEl   = document.getElementById('music');
+  const playBtn   = document.getElementById('music-play');
+  const prevBtn   = document.getElementById('music-prev');
+  const nextBtn   = document.getElementById('music-next');
+  const progress  = document.getElementById('music-progress');
+  const curEl     = document.getElementById('music-current');
+  const durEl     = document.getElementById('music-duration');
+  const volSlider = document.getElementById('volume-slider');
+  const volIcon   = document.getElementById('volume-icon');
+
+  jsmediatags.read('assets/music.mp3', {
+    onSuccess: (tag) => {
+      const t = tag.tags;
+      if (t.picture) {
+        const { data, format } = t.picture;
+        const base64 = data.reduce((acc, byte) => acc + String.fromCharCode(byte), '');
+        document.getElementById('music-cover').src = `data:${format};base64,${btoa(base64)}`;
+      }
+      document.getElementById('music-title').textContent = t.title || 'My Ordinary Life';
+      document.getElementById('music-artist').textContent = t.artist || 'The Living Tombstone';
+      musicEl.style.display = 'flex';
+    },
+    onError: () => {
+      musicEl.style.display = 'flex';
+    }
+  });
+
+  audio.addEventListener('loadedmetadata', () => {
+    durEl.textContent = formatTime(audio.duration);
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (!seeking && audio.duration) {
+      progress.value = (audio.currentTime / audio.duration) * 100;
+      curEl.textContent = formatTime(audio.currentTime);
+    }
+  });
+
+  progress.addEventListener('input', () => {
+    seeking = true;
+    if (audio.duration) {
+      curEl.textContent = formatTime((progress.value / 100) * audio.duration);
+    }
+  });
+
+  progress.addEventListener('change', () => {
+    if (audio.duration) {
+      audio.currentTime = (progress.value / 100) * audio.duration;
+    }
+    seeking = false;
+  });
+
+  const togglePlay = () => {
+    if (audio.paused) {
+      audio.play();
+      playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    } else {
+      audio.pause();
+      playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    }
+  };
+
+  playBtn.addEventListener('click', togglePlay);
+
+  prevBtn.addEventListener('click', () => {
+    audio.currentTime = 0;
+    progress.value = 0;
+    curEl.textContent = '0:00';
+    if (!audio.paused) {
+      audio.play();
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    audio.currentTime = 0;
+    progress.value = 0;
+    curEl.textContent = '0:00';
+    if (!audio.paused) {
+      audio.play();
+    }
+  });
+
+  audio.addEventListener('ended', () => {
+    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    progress.value = 0;
+    curEl.textContent = '0:00';
+  });
+
+  volSlider.addEventListener('input', () => {
+    audio.volume = parseFloat(volSlider.value);
+    volIcon.className = audio.volume === 0
+      ? 'fas fa-volume-xmark'
+      : audio.volume < 0.5
+        ? 'fas fa-volume-low'
+        : 'fas fa-volume-high';
+  });
+
+  audio.play().then(() => {
+    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+  }).catch(() => {});
+}
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s.toString().padStart(2, '0')}`;
 }

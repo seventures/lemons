@@ -38,6 +38,28 @@
       <div class="badges" id="badges"></div>
       <div class="socials" id="socials"></div>
 
+<div class="music" id="music">
+  <div class="music-art">
+    <img id="music-cover" src="" alt="" />
+  </div>
+  <div class="music-body">
+    <div class="music-title" id="music-title">My Ordinary Life</div>
+    <div class="music-artist" id="music-artist">The Living Tombstone</div>
+    <div class="music-progress-wrap">
+      <input type="range" class="music-progress" id="music-progress" value="0" min="0" max="100" step="0.1" />
+      <div class="music-time">
+        <span id="music-current">0:00</span>
+        <span id="music-duration">0:00</span>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-btn" id="music-prev" title="Restart"><i class="fas fa-backward-step"></i></button>
+      <button class="music-btn music-play-btn" id="music-play" title="Play"><i class="fas fa-play"></i></button>
+      <button class="music-btn" id="music-next" title="Skip"><i class="fas fa-forward-step"></i></button>
+    </div>
+  </div>
+</div>
+
       <!-- Profile views - off by default -->
       <!-- <div class="views"> -->
       <!--  <i class="fas fa-eye"></i> -->
@@ -48,7 +70,13 @@
     <p class="footer">Make your own &mdash; <a href="https://github.com/seventures/lemons">GitHub</a></p>
   </div>
 
+  <div class="volume-wrap" id="volume-wrap">
+    <i class="fas fa-volume-high" id="volume-icon"></i>
+    <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.01" value="0.5" />
+  </div>
+
   <script src="config.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

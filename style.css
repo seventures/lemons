@@ -258,6 +258,161 @@ html, body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
+/* ─── Volume slider ──────────────────────────────────────────── */
+.volume-wrap {
+  position: fixed; left: 16px; bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+  z-index: 10;
+  padding: 6px 10px;
+  border-radius: var(--radius-btn);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.volume-wrap i {
+  font-size: 0.85rem;
+  color: var(--accent);
+  width: 16px;
+  text-align: center;
+}
+
+.volume-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 64px; height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  cursor: pointer;
+}
+
+/* ─── Music widget ────────────────────────────────────────────── */
+.music {
+  width: 100%;
+  display: flex; gap: 12px;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: var(--radius-btn);
+  background: rgba(59,66,82,0.3);
+  border: 1px solid var(--border);
+}
+
+.music-art {
+  flex-shrink: 0;
+  width: 56px; height: 56px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--border);
+}
+
+.music-art img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.music-body {
+  flex: 1;
+  min-width: 0;
+  display: flex; flex-direction: column;
+  gap: 4px;
+}
+
+.music-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-artist {
+  font-size: 0.7rem;
+  color: var(--muted);
+  white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-progress-wrap {
+  display: flex; flex-direction: column;
+  gap: 2px;
+}
+
+.music-progress {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+
+.music-progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  cursor: pointer;
+}
+
+.music-progress::-moz-range-thumb {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  cursor: pointer;
+}
+
+.music-time {
+  display: flex; justify-content: space-between;
+  font-size: 0.6rem;
+  color: var(--muted);
+}
+
+.music-controls {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+.music-btn {
+  background: none; border: none;
+  color: var(--muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.15s;
+  display: flex;
+}
+
+.music-btn:hover { color: var(--accent); }
+
+.music-play-btn {
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.music-play-btn:hover { color: #b0e0e6; }
+
 /* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 480px) {
   .card { padding: 32px 20px 24px; }
