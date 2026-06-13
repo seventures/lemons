@@ -6,7 +6,7 @@
 
 Just create an issue if you want your example here.
 
-[seventure](sevenlemons.pages.dev)
+[seventure](https://sevenlemons.pages.dev)
 
 ## Quickstart
 
