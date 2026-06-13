@@ -13,7 +13,7 @@
   --link-hover:rgba(67,76,94,0.5);
   --radius-card: 20px;
   --radius-btn:  12px;
-  --font: 'Inter', system-ui, sans-serif;
+  --font: 'JetBrains Mono', 'Inter', system-ui, monospace;
 }
 
 html, body {
