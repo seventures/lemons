@@ -6,7 +6,6 @@
   const desc  = c.bio;
 
   document.getElementById('page-title').textContent = title;
-  document.getElementById('meta-desc').content      = desc;
   document.getElementById('username').textContent   = c.username;
   document.getElementById('uid').textContent        = `UID ${c.uid}`;
   document.getElementById('bio').textContent        = desc;
