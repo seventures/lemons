@@ -20,8 +20,6 @@
     avatarEl.src = `https://api.dicebear.com/7.x/thumbs/svg?seed=${c.username}`;
   };
 
-  document.getElementById('favicon').href = abs(c.avatar);
-
   // Badges
   const badgesEl = document.getElementById('badges');
   (c.badges || []).forEach(b => {
