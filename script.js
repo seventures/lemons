@@ -22,7 +22,7 @@
   const setImage = (src) => {
     document.getElementById('og-image').content = abs(src);
     document.getElementById('tw-image').content = abs(src);
-    document.getElementById('favicon').href     = `https://api.dicebear.com/7.x/thumbs/svg?seed=${c.username}`;
+    document.getElementById('favicon').href     = abs(src);
   };
 
   avatarEl.onerror = () => {
